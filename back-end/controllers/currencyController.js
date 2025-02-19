@@ -1,3 +1,4 @@
+import { Currency } from "../models/Currencies.js";
 import { CurrencyServises } from "../services/currencies.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -19,11 +20,24 @@ export class CurrencyController {
           Object.entries(result.conversion_rates).filter(([code]) =>
           filteredCurrencies.includes(code)
           )
-        );
-        const updated = CurrencyServises.calculate(filteredData,code, baseAmount);
-        const allCurrencies = CurrencyServises.calculate(result.conversion_rates,code, baseAmount);
-        console.log({updated});
-        console.log({allCurrencies});
+          );
+          
+          const updated = CurrencyServises.calculate(filteredData,code, baseAmount);
+          const allCurrencies = CurrencyServises.calculate(result.conversion_rates,code, baseAmount);
+
+          //Save to the db
+          const conversionRates = result.conversion_rates;
+          const currenciesArray = Object.entries(conversionRates).map(([code, rate]) => ({
+            code,
+            rate,
+          }));
+        for (const currency of currenciesArray) {
+          await Currency.findOneAndUpdate(
+            { code: currency.code }, 
+            { rate: currency.rate },
+            { upsert: true, new: true } 
+          );
+        }
         return res.json({updated, allCurrencies: allCurrencies || {}}); 
       } else {
         throw new Error("Invalid data received from API");

@@ -48,34 +48,40 @@ function App() {
     <>
       <div className=" mx-auto my-5 max-md:w-[80%] w-[40%] mt-10 max-h-[80%]">
         {loading ? (
-          <p>Loading</p>
+          <p className="p-3 text-center text-xl text-white">Loading...</p>
         ) : (
           <div className="flex flex-col justify-center">
             <h1 className="text-center text-2xl text-gray-300 my-5">
               Currency converter
             </h1>
-            <div className="flex flex-col justify-center bg-white rounded-xl ">
-              <CurrenciesComponent
-                currencies={currencies}
-                setCurrencies={setCurrencies}
-                handleInputChange={handleInputChange}
-                setFilteredCurrencies={setFilteredCurrencies}
-              />
-              <div className="flex flex-row justify-center gap-2 my-3  relative">
-                <span>+</span>
-                <button onClick={() => setDisplayAll(true)}>
-                  Add currency
-                </button>
-                {displayAll && (
-                  <AllCurrenciesUl
-                    allCurrencies={allCurrencies}
-                    setCurrencies={setCurrencies}
-                    setFilteredCurrencies={setFilteredCurrencies}
-                    setDisplayAll={setDisplayAll}
-                  />
-                )}
+            {currencies ? (
+              <div className="flex flex-col justify-center bg-white rounded-xl ">
+                <CurrenciesComponent
+                  currencies={currencies}
+                  setCurrencies={setCurrencies}
+                  handleInputChange={handleInputChange}
+                  setFilteredCurrencies={setFilteredCurrencies}
+                />
+                <div className="flex flex-row justify-center gap-2 my-3  relative">
+                  <span>+</span>
+                  <button onClick={() => setDisplayAll(true)}>
+                    Add currency
+                  </button>
+                  {displayAll && (
+                    <AllCurrenciesUl
+                      allCurrencies={allCurrencies}
+                      setCurrencies={setCurrencies}
+                      setFilteredCurrencies={setFilteredCurrencies}
+                      setDisplayAll={setDisplayAll}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <h3 className="text-center text-2xl text-gray-300 my-5">
+                No results found
+              </h3>
+            )}
             <div className="bg-white shadow-sm rounded-md mx-auto px-6 py-2 my-2">
               <NavLink to={"/list"}>See all</NavLink>
             </div>
