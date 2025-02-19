@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AllCurrenciesUl from "./components/AllCurrenciesUl/AllCurrenciesUl";
 import { getCurrencies, getIputCurrencies } from "./utils/api";
 import CurrenciesComponent from "./components/CurrenciesComponent/CurrenciesComponent";
+import { CurrenciesContext } from "./context/context";
+import { NavLink } from "react-router-dom";
 function App() {
   const [currencies, setCurrencies] = useState();
   const [filteredCurrencies, setFilteredCurrencies] = useState([
@@ -13,7 +15,7 @@ function App() {
   const [allCurrencies, setAllCurrencies] = useState();
   const [loading, setLoading] = useState(true);
   const [displayAll, setDisplayAll] = useState(false);
-
+  const { setGlobalCurrencies } = useContext(CurrenciesContext);
   const [amount, setAmount] = useState(1);
   useEffect(() => {
     getCurrencies({
@@ -25,6 +27,7 @@ function App() {
     });
   }, []);
   useEffect(() => {
+    setGlobalCurrencies(allCurrencies);
     console.log("Currencies updated:", currencies);
     console.log("AllCurrencies updated:", allCurrencies);
   }, [currencies]);
@@ -72,6 +75,9 @@ function App() {
                   />
                 )}
               </div>
+            </div>
+            <div className="bg-white shadow-sm rounded-md mx-auto px-6 py-2 my-2">
+              <NavLink to={"/list"}>See all</NavLink>
             </div>
           </div>
         )}
