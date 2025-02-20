@@ -42,7 +42,7 @@ function App() {
         setCurrencies,
         setAllCurrencies,
       });
-    }, 2000);
+    }, 3000);
   };
   return (
     <>

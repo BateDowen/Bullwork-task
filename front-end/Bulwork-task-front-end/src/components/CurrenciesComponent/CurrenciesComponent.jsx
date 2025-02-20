@@ -12,9 +12,10 @@ const CurrenciesComponent = ({
       {currencies &&
         Object.keys(currencies).length > 0 &&
         Object.entries(currencies).map(([code, value]) => (
-          <div className=" flex justify-between relative mx-auto">
+          <div key={code} className=" flex justify-between relative mx-auto">
             <Input
               key={code}
+              type='number'
               onChange={(e) =>
                 handleInputChange(code, parseFloat(e.target.value) || 0)
               }
